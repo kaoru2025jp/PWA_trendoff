@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>計算書</title>
+<style>
+body { font-family: sans-serif; padding: 20px; }
+input, button { margin: 6px 0; width: 100%; max-width: 300px; }
+</style>
+</head>
+<body>
+
+<h2>計算書</h2>
+
+S: <input id="s" type="number"><br>
+B: <input id="b" type="number"><br>
+O1: <input id="o1" type="number"><br>
+O2: <input id="o2" type="number"><br>
+
+<button onclick="calc()">計算して送信</button>
+
+<p>結果 s = <span id="result"></span></p>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/【あなたのGASのURL】/exec";
+
+function calc() {
+  const s = parseFloat(document.getElementById("s").value);
+  const b = parseFloat(document.getElementById("b").value);
+  const o1 = parseFloat(document.getElementById("o1").value);
+  const o2 = parseFloat(document.getElementById("o2").value);
+
+  const result = (s - b + o1 + o2).toFixed(2);
+  document.getElementById("result").textContent = result;
+
+  // JSONP用コールバック
+  const callbackName = "cb_" + Date.now();
+  window[callbackName] = function(res) {
+    delete window[callbackName];
+  };
+
+  const script = document.createElement("script");
+  script.src =
+    GAS_URL +
+    "?result=" + encodeURIComponent(result) +
+    "&callback=" + callbackName;
+
+  document.body.appendChild(script);
+}
+</script>
+
+</body>
+</html>
