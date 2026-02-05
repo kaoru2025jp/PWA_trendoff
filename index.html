@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>計算書</title>
+<title>計算</title>
 <style>
 body { font-family: sans-serif; padding: 20px; }
 input, button { margin: 6px 0; width: 100%; max-width: 300px; }
@@ -11,30 +11,30 @@ input, button { margin: 6px 0; width: 100%; max-width: 300px; }
 </head>
 <body>
 
-<h2>計算書</h2>
+<h2>計算</h2>
 
-S: <input id="s" type="number"><br>
-B: <input id="b" type="number"><br>
-O1: <input id="o1" type="number"><br>
-O2: <input id="o2" type="number"><br>
+S: <input id="S" type="number"><br>
+B: <input id="B" type="number"><br>
+O1: <input id="O1" type="number"><br>
+O2: <input id="O2" type="number"><br>
 
 <button onclick="calc()">計算して送信</button>
 
 <p>結果 s = <span id="result"></span></p>
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxgKdM1v13FnqZEur7rqgCBBnxcS4CyEA1z1LV-Acwt4HA1xVSLVfcWDvqcJNAy-WjM/exec";
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbxqs8PAFISejpE63Wwf0GDFTEcz_XKq8W2E-1InQyE4Z0Rw3h8ho9eP6YnXTjxF_ufo0g/exec";
 
 function calc() {
-  const s = parseFloat(document.getElementById("s").value);
-  const b = parseFloat(document.getElementById("b").value);
-  const o1 = parseFloat(document.getElementById("o1").value);
-  const o2 = parseFloat(document.getElementById("o2").value);
+  const S  = parseFloat(document.getElementById("S").value);
+  const B  = parseFloat(document.getElementById("B").value);
+  const O1 = parseFloat(document.getElementById("O1").value);
+  const O2 = parseFloat(document.getElementById("O2").value);
 
-  const result = (s - b + o1 + o2).toFixed(2);
-  document.getElementById("result").textContent = result;
+  const s = (S - B + O1 + O2).toFixed(2);
+  document.getElementById("result").textContent = s;
 
-  // JSONP用コールバック
   const callbackName = "cb_" + Date.now();
   window[callbackName] = function(res) {
     delete window[callbackName];
@@ -43,7 +43,7 @@ function calc() {
   const script = document.createElement("script");
   script.src =
     GAS_URL +
-    "?result=" + encodeURIComponent(result) +
+    "?s=" + encodeURIComponent(s) +
     "&callback=" + callbackName;
 
   document.body.appendChild(script);
